@@ -1,0 +1,380 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.11 (Ubuntu 14.11-0ubuntu0.22.04.1)
+-- Dumped by pg_dump version 14.11 (Ubuntu 14.11-0ubuntu0.22.04.1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: almacen; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.almacen (
+    cod_almacen character varying(20) NOT NULL,
+    direccion character varying(200),
+    capacidad integer
+);
+
+
+ALTER TABLE public.almacen OWNER TO admin;
+
+--
+-- Name: almacena_producto; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.almacena_producto (
+    cod_producto bigint NOT NULL,
+    cod_almacen character varying(20) NOT NULL,
+    cantidad integer,
+    fecha_almacenamiento date
+);
+
+
+ALTER TABLE public.almacena_producto OWNER TO admin;
+
+--
+-- Name: cliente; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.cliente (
+    cuit_cuil bigint NOT NULL,
+    nombre character varying(100),
+    telefono bigint,
+    direccion character varying(200)
+);
+
+
+ALTER TABLE public.cliente OWNER TO admin;
+
+--
+-- Name: detalle_factura; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.detalle_factura (
+    nro_factura integer NOT NULL,
+    cod_producto bigint NOT NULL,
+    cantidad integer,
+    precio double precision
+);
+
+
+ALTER TABLE public.detalle_factura OWNER TO admin;
+
+--
+-- Name: factura; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.factura (
+    nro_factura integer NOT NULL,
+    fecha date,
+    cuit_cliente bigint
+);
+
+
+ALTER TABLE public.factura OWNER TO admin;
+
+--
+-- Name: producto; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.producto (
+    cod_producto bigint NOT NULL,
+    nombre character varying(100),
+    precio double precision,
+    lote character varying(50),
+    fecha_caducidad date,
+    usuario character varying(100)
+);
+
+
+ALTER TABLE public.producto OWNER TO admin;
+
+--
+-- Name: usuario; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.usuario (
+    usuario character varying(100) NOT NULL,
+    nombre character varying(100),
+    email character varying(100),
+    "contraseña" character varying(100),
+    rol character varying(50)
+);
+
+
+ALTER TABLE public.usuario OWNER TO admin;
+
+--
+-- Data for Name: almacen; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY public.almacen (cod_almacen, direccion, capacidad) FROM stdin;
+A001	Calle Principal 123	1000
+A002	Avenida Central 456	1500
+A003	Plaza Mayor 789	2000
+A004	Paseo del Río 321	1200
+A005	Callejón Estrecho 654	1800
+A006	Avenida del Bosque 987	2200
+A007	Camino Real 135	1300
+A008	Calle de los Sueños 246	1700
+A009	Paseo de la Luna 579	2100
+A010	Avenida de las Flores 864	1600
+A011	Bulevar del Sol 159	1900
+A012	Calle del Mar 462	2300
+A013	Paseo de las Estrellas 795	1400
+A014	Calle de los Deseos 238	2000
+A015	Avenida de la Libertad 571	2500
+\.
+
+
+--
+-- Data for Name: almacena_producto; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY public.almacena_producto (cod_producto, cod_almacen, cantidad, fecha_almacenamiento) FROM stdin;
+1	A001	100	2024-05-01
+2	A002	120	2024-05-02
+3	A003	80	2024-05-03
+4	A004	150	2024-05-04
+5	A005	200	2024-05-05
+6	A006	90	2024-05-06
+7	A007	110	2024-05-07
+8	A008	130	2024-05-08
+9	A009	70	2024-05-09
+10	A010	140	2024-05-10
+11	A011	100	2024-05-11
+12	A012	160	2024-05-12
+13	A013	180	2024-05-13
+14	A014	110	2024-05-14
+15	A015	120	2024-05-15
+\.
+
+
+--
+-- Data for Name: cliente; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY public.cliente (cuit_cuil, nombre, telefono, direccion) FROM stdin;
+12345678901	Cliente 1	1122334455	Calle 123
+23456789012	Cliente 2	2233445566	Avenida 456
+34567890123	Cliente 3	3344556677	Plaza 789
+45678901234	Cliente 4	4455667788	Paseo 321
+56789012345	Cliente 5	5566778899	Callejon 654
+67890123456	Cliente 6	6677889900	Avenida Bosque 987
+78901234567	Cliente 7	7788990011	Camino Real 135
+89012345678	Cliente 8	8899001122	Calle de los Sueños 246
+90123456789	Cliente 9	9900112233	Paseo Luna 579
+11223344556	Cliente 10	1122334455	Calle 123
+22334455667	Cliente 11	2233445566	Avenida 456
+33445566778	Cliente 12	3344556677	Plaza 789
+44556677889	Cliente 13	4455667788	Paseo 321
+55667788990	Cliente 14	5566778899	Callejon 654
+66778899001	Cliente 15	6677889900	Avenida Bosque 987
+\.
+
+
+--
+-- Data for Name: detalle_factura; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY public.detalle_factura (nro_factura, cod_producto, cantidad, precio) FROM stdin;
+1001	1	5	12.5
+1001	2	3	5.4
+1002	3	8	24
+1002	4	2	4
+1003	5	10	45
+1003	6	4	12.8
+1004	7	6	7.2
+1004	8	7	7
+1005	9	9	25.2
+1005	10	12	25.2
+1006	11	5	7.5
+1006	12	7	25.9
+1007	13	15	75
+1007	14	8	33.6
+1008	15	10	23
+\.
+
+
+--
+-- Data for Name: factura; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY public.factura (nro_factura, fecha, cuit_cliente) FROM stdin;
+1001	2024-05-01	12345678901
+1002	2024-05-02	23456789012
+1003	2024-05-03	34567890123
+1004	2024-05-04	45678901234
+1005	2024-05-05	56789012345
+1006	2024-05-06	67890123456
+1007	2024-05-07	78901234567
+1008	2024-05-08	89012345678
+1009	2024-05-09	90123456789
+1010	2024-05-10	12345678901
+1011	2024-05-11	23456789012
+1012	2024-05-12	34567890123
+1013	2024-05-13	45678901234
+1014	2024-05-14	56789012345
+1015	2024-05-15	67890123456
+\.
+
+
+--
+-- Data for Name: producto; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY public.producto (cod_producto, nombre, precio, lote, fecha_caducidad, usuario) FROM stdin;
+1	Manzanas	2.5	Lote001	2024-05-15	usuario1
+2	Peras	1.8	Lote002	2024-05-20	usuario2
+3	Naranjas	3	Lote003	2024-05-18	usuario3
+4	Plátanos	2	Lote004	2024-05-22	usuario4
+5	Fresas	4.5	Lote005	2024-05-25	usuario5
+6	Uvas	3.2	Lote006	2024-05-28	usuario1
+7	Papas	1.2	Lote007	2024-05-16	usuario2
+8	Zanahorias	1	Lote008	2024-05-19	usuario3
+9	Tomates	2.8	Lote009	2024-05-21	usuario4
+10	Lechugas	2.1	Lote010	2024-05-26	usuario5
+11	Cebollas	1.5	Lote011	2024-05-17	usuario1
+12	Pimientos	3.7	Lote012	2024-05-23	usuario2
+13	Sandías	5	Lote013	2024-05-27	usuario3
+14	Melones	4.2	Lote014	2024-05-29	usuario4
+15	Pepinos	2.3	Lote015	2024-05-30	usuario5
+\.
+
+
+--
+-- Data for Name: usuario; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY public.usuario (usuario, nombre, email, "contraseña", rol) FROM stdin;
+usuario1	Juan Perez	juanperez@example.com	contraseña1	Administrador
+usuario2	Maria Gomez	mariagomez@example.com	contraseña2	Gerente
+usuario3	Carlos Martinez	carlosmartinez@example.com	contraseña3	Vendedor
+usuario4	Laura Rodriguez	laurarodriguez@example.com	contraseña4	Almacenero
+usuario5	Ana Sanchez	anasanchez@example.com	contraseña5	Cajero
+\.
+
+
+--
+-- Name: almacen almacen_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.almacen
+    ADD CONSTRAINT almacen_pkey PRIMARY KEY (cod_almacen);
+
+
+--
+-- Name: almacena_producto almacena_producto_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.almacena_producto
+    ADD CONSTRAINT almacena_producto_pkey PRIMARY KEY (cod_producto, cod_almacen);
+
+
+--
+-- Name: cliente cliente_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.cliente
+    ADD CONSTRAINT cliente_pkey PRIMARY KEY (cuit_cuil);
+
+
+--
+-- Name: detalle_factura detalle_factura_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.detalle_factura
+    ADD CONSTRAINT detalle_factura_pkey PRIMARY KEY (nro_factura, cod_producto);
+
+
+--
+-- Name: factura factura_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.factura
+    ADD CONSTRAINT factura_pkey PRIMARY KEY (nro_factura);
+
+
+--
+-- Name: producto producto_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.producto
+    ADD CONSTRAINT producto_pkey PRIMARY KEY (cod_producto);
+
+
+--
+-- Name: usuario usuario_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.usuario
+    ADD CONSTRAINT usuario_pkey PRIMARY KEY (usuario);
+
+
+--
+-- Name: almacena_producto almacena_producto_cod_almacen_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.almacena_producto
+    ADD CONSTRAINT almacena_producto_cod_almacen_fkey FOREIGN KEY (cod_almacen) REFERENCES public.almacen(cod_almacen);
+
+
+--
+-- Name: almacena_producto almacena_producto_cod_producto_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.almacena_producto
+    ADD CONSTRAINT almacena_producto_cod_producto_fkey FOREIGN KEY (cod_producto) REFERENCES public.producto(cod_producto);
+
+
+--
+-- Name: detalle_factura detalle_factura_cod_producto_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.detalle_factura
+    ADD CONSTRAINT detalle_factura_cod_producto_fkey FOREIGN KEY (cod_producto) REFERENCES public.producto(cod_producto);
+
+
+--
+-- Name: detalle_factura detalle_factura_nro_factura_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.detalle_factura
+    ADD CONSTRAINT detalle_factura_nro_factura_fkey FOREIGN KEY (nro_factura) REFERENCES public.factura(nro_factura);
+
+
+--
+-- Name: factura factura_cuit_cliente_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.factura
+    ADD CONSTRAINT factura_cuit_cliente_fkey FOREIGN KEY (cuit_cliente) REFERENCES public.cliente(cuit_cuil);
+
+
+--
+-- Name: producto producto_usuario_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.producto
+    ADD CONSTRAINT producto_usuario_fkey FOREIGN KEY (usuario) REFERENCES public.usuario(usuario);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
